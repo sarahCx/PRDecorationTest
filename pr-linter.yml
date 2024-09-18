@@ -1,0 +1,27 @@
+name: PR Linter
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Title and Branch
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BRANCH="${{ github.head_ref }}"
+          
+          if ! [[ "$PR_TITLE" =~ ^[A-Z][a-zA-Z0-9]*\([A-Z]+-[0-9]+\)$ ]]; then
+            echo "::error::PR title must follow CamelCase and end with a Jira ticket ID (e.g., '(AST-XXXX)')."
+            exit 1
+          fi
+          
+          # Check if branch starts with "bug/" or "feature/"
+          if ! [[ "$PR_BRANCH" =~ ^(bug|feature)/ ]]; then
+            echo "::error::Branch name must start with 'bug/' or 'feature/'."
+            exit 1
+          fi
+
+        shell: bash
