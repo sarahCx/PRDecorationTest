@@ -26,7 +26,7 @@ jobs:
         fi
 
         # Check if branch starts with "bug/" or "feature/"
-        if ! [[ "$PR_BRANCH" =~ ^(bug|feature)/ ]]; then
+        if ! [[ "$PR_BRANCH" =~ ^(bug|feature|other)/ ]]; then
           echo "::error::Branch name must start with 'bug/' or 'feature/'."
           exit 1
         fi
